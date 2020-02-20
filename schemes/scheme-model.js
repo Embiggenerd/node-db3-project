@@ -43,10 +43,41 @@ const add = async (scheme) => {
     }
 }
 
+const update = async (changes, id) => {
+    console.log('update invoked', changes, id)
+    try {
+        const toUpdate = await db('schemes')
+            .where({ id })
+            .update(changes)
+
+        console.log('toUpdate', toUpdate)
+        const updated = await db('schemes').select('*').where({ id: toUpdate[0] })
+        return updated
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const remove = async id => {
+    console.log('removeInvoked', id)
+    try {
+        const toRemove = await db('schemes')
+            .select('*')
+            .where({id})
+            
+        await db('schemes').where({ id }).del()
+        return toRemove
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 
 module.exports = {
     find,
     findById,
     findSteps,
-    add
+    update,
+    add,
+    remove
 }
