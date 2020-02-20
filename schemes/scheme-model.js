@@ -32,10 +32,21 @@ const findSteps = async id => {
     }
 }
 
+const add = async (scheme) => {
+    console.log('addscheme', scheme)
+    try {
+        const [id] = await db('schemes').insert(scheme)
+        const added = await db('schemes').select('*').where({ id })
+        return added
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 
 module.exports = {
     find,
     findById,
-    findSteps
+    findSteps,
+    add
 }
